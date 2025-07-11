@@ -1,15 +1,13 @@
 package engine.entities;
 
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.joml.Vector3fc;
 
 public abstract class Entity {
-    protected Vector2f pos;
+    protected Vector3f pos;
     protected float rot, scale;
 
-    public Entity(Vector2f pos) {
+    public Entity(Vector3f pos) {
         this.pos = pos;
         rot = 0;
         scale = 1;
@@ -19,7 +17,7 @@ public abstract class Entity {
         Matrix4f transform = new Matrix4f();
         transform.identity();
 
-        transform.rotationZ(rot);
+        transform.rotationXYZ(0,0,rot);
         transform.translate(new Vector3f(pos.x,pos.y,1));
         transform.scale(scale);
 
@@ -30,11 +28,11 @@ public abstract class Entity {
 
     public abstract void render();
 
-    public Vector2f getPos() {
+    public Vector3f getPos() {
         return pos;
     }
 
-    public void setPos(Vector2f pos) {
+    public void setPos(Vector3f pos) {
         this.pos = pos;
     }
 

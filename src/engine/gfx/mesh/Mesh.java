@@ -27,10 +27,6 @@ public class Mesh {
     private int posSize = 3, colorSize = 4, texSize = 2, floatSizeBytes = 4;
     private int vertexSizeBytes = (posSize + colorSize + texSize) * floatSizeBytes;
 
-    public Mesh(Mesh mesh) {
-        new Mesh(mesh.getVertices(), mesh.getIndices());
-    }
-
     public Mesh(float[] vertices, int[] indices) {
         this.vertices = vertices;
         this.indices = indices;

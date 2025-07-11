@@ -6,7 +6,8 @@ import engine.gfx.shaders.DefaultShader;
 import engine.gfx.shaders.Shader;
 import engine.gfx.Texture;
 import engine.util.Handler;
-import org.joml.Vector2f;
+import engine.world.World;
+import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
@@ -14,16 +15,19 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 public class GameScene extends Scene{
     private Shader defaultShader;
     private Player player;
+    private World world;
 
     public GameScene() {
         this.defaultShader = new DefaultShader();
-        player = new Player(new Vector2f(0.0f,0.0f));
+        player = new Player(new Vector3f(0.0f,0.0f,0.0f));
+        world = new World();
+        Camera.setFallowedEntity(player);
     }
 
     @Override
     public void tick(double dt) {
         player.tick(dt);
-        player.setScale(player.getScale()+.01f);
+        world.tick(dt);
     }
 
     @Override
@@ -36,6 +40,7 @@ public class GameScene extends Scene{
         Handler.setCurentShader(defaultShader);
         //aici da render la entitati
         player.render();
+        world.render();
         Shader.unBind();
     }
 }

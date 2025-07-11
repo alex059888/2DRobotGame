@@ -2,33 +2,22 @@ package engine.gfx;
 
 import engine.entities.Entity;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 public class Camera {
     private static Entity fallowedEntity;
     private static Matrix4f ortho;
 
     public static Matrix4f getOrtho(int width, int height, float zFar, float zNear) {
-        Matrix4f o = new Matrix4f();
-        o.m00((float) 2 /width);
-        o.m11((float) 2 /height);
-        o.m22((float) -2 /(zFar-zNear));
-        o.m23(-(zFar + zNear) /(zFar - zNear));
-        o.m33(1);
-        return  o;
+        return new Matrix4f().ortho((float) -width /2, (float) width /2, (float) -height /2, (float) height /2,zNear,zFar);
     }
 
     public static Matrix4f getView() {
-        Matrix4f o = new Matrix4f();
-        if (fallowedEntity != null) {
-            o.m30(-fallowedEntity.getPos().x);
-            o.m31(-fallowedEntity.getPos().y);
-        }
-        o.m00(1);
-        o.m11(1);
-        o.m22(1);
-        o.m33(1);
-
-        return o;
+        Vector3f up = new Vector3f(0,1f,0);
+        Vector3f front = new Vector3f(0,0,-1);
+        return new Matrix4f().lookAt(fallowedEntity.getPos(),
+                front.add(fallowedEntity.getPos().x, fallowedEntity.getPos().y,0),
+                up);
     }
 
     public static Entity getFallowedEntity() {
