@@ -7,7 +7,7 @@ import org.joml.Vector3f;
 public class World {
     private TileCluster[][] clusters;
     private Player player;
-    private static int MAP_WIDTH = 99, MAP_HEIGHT = 99;
+    private static int MAP_WIDTH = 3, MAP_HEIGHT = 3;
 
     public World() {
         clusters = new TileCluster[MAP_WIDTH][MAP_HEIGHT];
@@ -21,7 +21,8 @@ public class World {
                 clusters[i][j] = new TileCluster(pos,1);
             }
         }
-        player = new Player(new Vector3f(TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE*MAP_WIDTH/2,TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE*MAP_HEIGHT/2,0.0f),0);
+        player = new Player(new Vector3f());
+        //player = new Player(new Vector3f(TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE*MAP_WIDTH/2,TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE*MAP_HEIGHT/2,0.0f));
         Camera.setFallowedEntity(player);
     }
 

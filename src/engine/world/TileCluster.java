@@ -66,7 +66,6 @@ public class TileCluster {
         Matrix4f transform = new Matrix4f();
         transform.identity();
 
-        transform.rotationXYZ(0,0,0);
         transform.translate(new Vector3f(pos.x,pos.y,pos.z));
         transform.scale(1);
 

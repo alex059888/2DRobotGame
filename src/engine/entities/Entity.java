@@ -1,5 +1,6 @@
 package engine.entities;
 
+import org.joml.Math;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -17,8 +18,8 @@ public abstract class Entity {
         Matrix4f transform = new Matrix4f();
         transform.identity();
 
-        transform.rotationXYZ(0,0,rot);
         transform.translate(new Vector3f(pos.x,pos.y,1));
+        transform.rotateZ(Math.toRadians(rot));
         transform.scale(scale);
 
         return transform;
