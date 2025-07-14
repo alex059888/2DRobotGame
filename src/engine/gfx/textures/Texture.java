@@ -1,4 +1,4 @@
-package engine.gfx;
+package engine.gfx.textures;
 
 import org.lwjgl.BufferUtils;
 
@@ -31,7 +31,8 @@ public class Texture {
     private final int id;
 
     public static List<Texture> textures = List.of(
-            new Texture("./res/textures/PlaceHolder.png",256,0)
+            new PlaceHolderTex(0),
+            new TerrainTex(1)
     );
 
     public Texture(String filepath, int texSize, int id) {

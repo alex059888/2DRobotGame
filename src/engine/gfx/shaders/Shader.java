@@ -156,4 +156,8 @@ public abstract class Shader {
     public abstract void setProjection(Matrix4f projection);
 
     public abstract void setView(Matrix4f view);
+
+    public int getProgram() {
+        return program;
+    }
 }

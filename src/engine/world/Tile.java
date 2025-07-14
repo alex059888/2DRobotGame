@@ -1,7 +1,6 @@
 package engine.world;
 
-import engine.gfx.Texture;
-import engine.gfx.mesh.Mesh;
+import engine.gfx.textures.Texture;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 

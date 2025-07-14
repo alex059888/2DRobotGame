@@ -1,6 +1,7 @@
 package engine.world;
 
 import engine.gfx.mesh.Mesh;
+import engine.gfx.textures.Texture;
 import engine.util.Handler;
 import org.joml.Matrix4f;
 import org.joml.Vector2i;
@@ -15,7 +16,7 @@ public class TileCluster {
     private Mesh mesh;
     private int texId;
 
-    private static int CLUSTER_LENGTH = 16;
+    public static final int CLUSTER_LENGTH = 16;
 
     public TileCluster(Vector3f pos, int texId) {
         tiles = new Tile[CLUSTER_LENGTH][CLUSTER_LENGTH];
@@ -56,8 +57,8 @@ public class TileCluster {
     public void tick(double dt) {}
 
     public void render() {
-        Handler.getCurentShader().setTexture("tex",texId);
         Handler.getCurentShader().setTransform(transform());
+        Texture.getTexture(texId).bind();
         mesh.render();
     }
 

@@ -57,10 +57,10 @@ public class Game {
             lastTime = now;
 
             if(dt >= 1.0f) {
-                dt=0.0f;
                 glfwPollEvents();
                 tick(dt);
                 render();
+                dt=0.0f;
             }
         }
     }

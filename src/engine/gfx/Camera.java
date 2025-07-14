@@ -5,7 +5,17 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class Camera {
-    private static Entity fallowedEntity;
+    private static Entity fallowedEntity = new Entity(new Vector3f(0,0,0)) {
+        @Override
+        public void tick(double dt) {
+
+        }
+
+        @Override
+        public void render() {
+
+        }
+    };
     private static Matrix4f ortho;
 
     public static Matrix4f getOrtho(int width, int height, float zFar, float zNear) {
