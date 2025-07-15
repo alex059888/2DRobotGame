@@ -34,6 +34,7 @@ public class Game {
         glCullFace(GL_FRONT);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         Camera.setOrtho(Camera.getOrtho(window.getWidth(),window.getHeight(),100f,-100f));
+        Handler.setWindow(window);
 
         Handler.setCurrentScene(new GameScene());
     }
@@ -82,5 +83,9 @@ public class Game {
         glfwFreeCallbacks(window.getWindow());
         glfwDestroyWindow(window.getWindow());
         glfwTerminate();
+    }
+
+    public Window getWindow() {
+        return window;
     }
 }

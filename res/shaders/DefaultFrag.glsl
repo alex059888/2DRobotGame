@@ -11,5 +11,7 @@ uniform sampler2D tex;
 void main() {
     vec4 texture = texture(tex, fTexCoords);
     vec4 texColor = texture * fColor;
+    if(texColor.w == 0)
+        discard;
     color = texColor;
 }
