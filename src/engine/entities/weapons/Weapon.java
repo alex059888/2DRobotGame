@@ -4,6 +4,7 @@ import engine.entities.Entity;
 import engine.entities.EntityType;
 import engine.entities.projectiles.Projectile;
 import engine.entities.projectiles.ProjectileType;
+import engine.entities.template.SlotType;
 import engine.util.Handler;
 import org.joml.Math;
 import org.joml.Matrix3f;
@@ -15,14 +16,23 @@ public class Weapon extends Entity {
     protected int currentShotDelay;
     protected ProjectileType projectile;
     protected Vector3f distFromCenter;
+    protected SlotType slotType;
 
-    public Weapon(Vector3f pos, Vector3f origin, Vector2f texPos, int shotDelay, ProjectileType projectile, Vector3f distFromCenter) {
+    public Weapon(Vector3f pos, Vector2f texPos, int shotDelay, ProjectileType projectile, Vector3f distFromCenter, SlotType slotType) {
         super(pos, EntityType.WEAPON,64,texPos,4);
         this.shotDelay = shotDelay;
+        this.slotType = slotType;
         this.distFromCenter = distFromCenter;
         this.projectile = projectile;
         currentShotDelay = 0;
-        posFromOrigin = new Vector3f(pos.x - origin.x, pos.y - origin.y, pos.z - origin.z);
+    }
+
+    public static Weapon genWeapon(String weapon, Vector3f pos) {
+        return switch (weapon) {
+            case "Small Turret" -> new SmallTurret(pos);
+            case "Large Turret" -> new LargeTurret(pos);
+            default -> null;
+        };
     }
 
     @Override
@@ -43,5 +53,9 @@ public class Weapon extends Entity {
             Vector3f cp = new Vector3f(distFromCenter).mul(m);
             Handler.getWorld().addProjectile(new Projectile(projectile, new Vector3f(pos).add(cp),rot));
         }
+    }
+
+    public SlotType getSlotType() {
+        return slotType;
     }
 }

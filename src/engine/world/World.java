@@ -6,7 +6,6 @@ import engine.gfx.Camera;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class World {
