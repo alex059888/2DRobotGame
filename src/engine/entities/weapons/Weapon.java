@@ -1,0 +1,47 @@
+package engine.entities.weapons;
+
+import engine.entities.Entity;
+import engine.entities.EntityType;
+import engine.entities.projectiles.Projectile;
+import engine.entities.projectiles.ProjectileType;
+import engine.util.Handler;
+import org.joml.Math;
+import org.joml.Matrix3f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+
+public class Weapon extends Entity {
+    protected int shotDelay;
+    protected int currentShotDelay;
+    protected ProjectileType projectile;
+    protected Vector3f distFromCenter;
+
+    public Weapon(Vector3f pos, Vector3f origin, Vector2f texPos, int shotDelay, ProjectileType projectile, Vector3f distFromCenter) {
+        super(pos, EntityType.WEAPON,64,texPos,4);
+        this.shotDelay = shotDelay;
+        this.distFromCenter = distFromCenter;
+        this.projectile = projectile;
+        currentShotDelay = 0;
+        posFromOrigin = new Vector3f(pos.x - origin.x, pos.y - origin.y, pos.z - origin.z);
+    }
+
+    @Override
+    public void tick(double dt) {
+        super.tick(dt);
+        if(currentShotDelay > 0) currentShotDelay--;
+    }
+
+    @Override
+    public void render() {
+        super.render();
+    }
+
+    public void shot() {
+        if (currentShotDelay <= 0) {
+            currentShotDelay = shotDelay;
+            Matrix3f m = new Matrix3f().identity().rotateZ(Math.toRadians(rot));
+            Vector3f cp = new Vector3f(distFromCenter).mul(m);
+            Handler.getWorld().addProjectile(new Projectile(projectile, new Vector3f(pos).add(cp),rot));
+        }
+    }
+}

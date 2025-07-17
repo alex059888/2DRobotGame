@@ -4,7 +4,6 @@ import engine.gfx.Camera;
 import engine.gfx.Window;
 import engine.io.MouseListener;
 import engine.scenes.GameScene;
-import engine.util.GlobalVars;
 import engine.util.Handler;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL;
@@ -17,7 +16,7 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 public class Game {
     private Window window;
     private Vector4f refreshColor;
-    public Game() {}
+    public static double FPS = 60;
 
     private void init() {
         glfwInit();
@@ -46,7 +45,7 @@ public class Game {
     }
 
     private void loop() {
-        double timePerFrame = 1 / GlobalVars.getFPS();
+        double timePerFrame = 1 / FPS;
         double dt = 0;
         double now, lastTime = (double) System.nanoTime()/1000000000;
         double cdt;

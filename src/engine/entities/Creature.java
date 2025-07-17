@@ -1,51 +1,25 @@
 package engine.entities;
 
 import engine.entities.weals.Shenile;
+import engine.entities.weals.Weals;
 import engine.gfx.mesh.Mesh;
-import engine.gfx.textures.Texture;
-import engine.util.Handler;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class Creature extends Entity{
     protected Mesh mesh;
-    protected static int texId = 3;
     protected float speed = 5;
-    protected Vector2f texPos;
     protected Weals weals;
 
     public Creature(Vector3f pos, Vector2f texPos, EntityType type) {
-        super(pos, type);
-        this.texPos = texPos;
+        super(pos, type,64,texPos, 3);
         setIndependentRotation(true);
-        float[] verts = {
-                //x   y   z r g b a u v
-                -64,-64,0,1,1,1,1,
-                Texture.getTexCoord(texPos.x,Texture.getTexture(texId).getTexSize(), 64),
-                Texture.getTexCoord(texPos.y+1,Texture.getTexture(texId).getTexSize(), 64),
-                -64, 64,0,1,1,1,1,
-                Texture.getTexCoord(texPos.x,Texture.getTexture(texId).getTexSize(), 64),
-                Texture.getTexCoord(texPos.y,Texture.getTexture(texId).getTexSize(), 64),
-                64, 64,0,1,1,1,1,
-                Texture.getTexCoord(texPos.x+1,Texture.getTexture(texId).getTexSize(), 64),
-                Texture.getTexCoord(texPos.y,Texture.getTexture(texId).getTexSize(), 64),
-                64,-64,0,1,1,1,1,
-                Texture.getTexCoord(texPos.x+1,Texture.getTexture(texId).getTexSize(), 64),
-                Texture.getTexCoord(texPos.y+1,Texture.getTexture(texId).getTexSize(), 64)
-        };
-        int[] ebos = {
-                0,1,2,2,3,0
-        } ;
-        mesh = new Mesh(verts,ebos);
         weals = new Shenile(pos);
     }
 
     @Override
     public void render() {
         super.render();
-        Handler.getCurentShader().setTransform(transform());
-        Texture.getTexture(texId).bind();
-        mesh.render();
         weals.render();
     }
 

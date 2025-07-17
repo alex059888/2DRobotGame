@@ -17,6 +17,7 @@ public class GameScene extends Scene{
     public GameScene() {
         this.defaultShader = new DefaultShader();
         world = new World();
+        Handler.setWorld(world);
     }
 
     @Override

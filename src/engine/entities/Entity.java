@@ -1,5 +1,9 @@
 package engine.entities;
 
+import engine.entities.weapons.Weapon;
+import engine.gfx.mesh.Mesh;
+import engine.gfx.textures.Texture;
+import engine.util.Handler;
 import org.joml.*;
 import org.joml.Math;
 
@@ -12,14 +16,40 @@ public class Entity {
     protected List<Weapon> weapons;
     protected boolean independentRotation = false;
     protected EntityType type;
+    protected int subTexLength;
+    protected Vector2f texPos;
+    protected Mesh mesh;
+    protected int texId;
 
-    public Entity(Vector3f pos, EntityType type) {
+    public Entity(Vector3f pos, EntityType type, int subTexLength, Vector2f texPos, int texId) {
         this.pos = pos;
         this.type = type;
+        this.subTexLength = subTexLength;
+        this.texPos = texPos;
+        this.texId = texId;
         posFromOrigin = new Vector3f();
         rot = 0;
         scale = 1;
         weapons = new ArrayList<>();
+        float[] verts = {
+                //x   y   z r g b a u v
+                -subTexLength,-subTexLength,0,1,1,1,1,
+                Texture.getTexCoord(texPos.x,Texture.getTexture(texId).getTexSize(), subTexLength),
+                Texture.getTexCoord(texPos.y+1,Texture.getTexture(texId).getTexSize(), subTexLength),
+                -subTexLength, subTexLength,0,1,1,1,1,
+                Texture.getTexCoord(texPos.x,Texture.getTexture(texId).getTexSize(), subTexLength),
+                Texture.getTexCoord(texPos.y,Texture.getTexture(texId).getTexSize(), subTexLength),
+                subTexLength, subTexLength,0,1,1,1,1,
+                Texture.getTexCoord(texPos.x+1,Texture.getTexture(texId).getTexSize(), subTexLength),
+                Texture.getTexCoord(texPos.y,Texture.getTexture(texId).getTexSize(), subTexLength),
+                subTexLength,-subTexLength,0,1,1,1,1,
+                Texture.getTexCoord(texPos.x+1,Texture.getTexture(texId).getTexSize(), subTexLength),
+                Texture.getTexCoord(texPos.y+1,Texture.getTexture(texId).getTexSize(), subTexLength)
+        };
+        int[] ebos = {
+                0,1,2,2,3,0
+        } ;
+        mesh = new Mesh(verts, ebos);
     }
 
     public Matrix4f transform() {
@@ -55,6 +85,9 @@ public class Entity {
     public void render() {
         for(Entity e : weapons)
             e.render();
+        Handler.getCurentShader().setTransform(transform());
+        Texture.getTexture(texId).bind();
+        mesh.render();
     }
 
     public Vector3f getPos() {

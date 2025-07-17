@@ -1,21 +1,22 @@
 package engine.world;
 
-import engine.entities.Entity;
 import engine.entities.Player;
+import engine.entities.projectiles.Projectile;
 import engine.gfx.Camera;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class World {
     private TileCluster[][] clusters;
     private Player player;
-    private List<Entity> entities;
+    private List<Projectile> bullets;
     private static int MAP_WIDTH = 3, MAP_HEIGHT = 3;
 
     public World() {
-        entities = new ArrayList<>();
+        bullets = new ArrayList<>();
         clusters = new TileCluster[MAP_WIDTH][MAP_HEIGHT];
         for(int i = 0; i < MAP_WIDTH; i++) {
             for(int j = 0; j < MAP_HEIGHT; j++) {
@@ -33,7 +34,7 @@ public class World {
 
     public void tick(double dt) {
         player.tick(dt);
-        for (Entity e : entities) e.tick(dt);
+        for (Projectile e : bullets) e.tick(dt);
     }
 
     public void render() {
@@ -52,7 +53,16 @@ public class World {
                     clusters[i][j].render();
             }
         }
+        for (Projectile e : bullets) e.render();
+        bullets.removeIf(projectile -> projectile.getLifeSpan() <= 0);
         player.render();
-        for (Entity e : entities) e.render();
+    }
+
+    public void addProjectile(Projectile e) {
+        bullets.add(e);
+    }
+
+    public List<Projectile> getBullets() {
+        return bullets;
     }
 }

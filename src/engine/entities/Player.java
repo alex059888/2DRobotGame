@@ -2,6 +2,7 @@ package engine.entities;
 
 import engine.entities.weapons.LargeTurret;
 import engine.entities.weapons.SmallTurret;
+import engine.entities.weapons.Weapon;
 import engine.io.KeyListener;
 import engine.io.MouseListener;
 import engine.util.Handler;
@@ -22,13 +23,13 @@ public class Player extends Creature{
     @Override
     public void tick(double dt) {
         Vector3f walk = new Vector3f(0,0,0);
-        if(KeyListener.isKeyPressed(GLFW_KEY_UP))
+        if(KeyListener.isKeyPressed(GLFW_KEY_UP) || KeyListener.isKeyPressed(GLFW_KEY_W))
             walk.y+=speed*dt;
-        if(KeyListener.isKeyPressed(GLFW_KEY_DOWN))
+        if(KeyListener.isKeyPressed(GLFW_KEY_DOWN) || KeyListener.isKeyPressed(GLFW_KEY_S))
             walk.y-=speed*dt;
-        if(KeyListener.isKeyPressed(GLFW_KEY_LEFT))
+        if(KeyListener.isKeyPressed(GLFW_KEY_LEFT) || KeyListener.isKeyPressed(GLFW_KEY_A))
             rot += 2*dt;
-        if(KeyListener.isKeyPressed(GLFW_KEY_RIGHT))
+        if(KeyListener.isKeyPressed(GLFW_KEY_RIGHT) || KeyListener.isKeyPressed(GLFW_KEY_D))
             rot -= 2*dt;
         Matrix3f m = new Matrix3f().identity().rotateZ(Math.toRadians(rot));
         walk.mul(m);
