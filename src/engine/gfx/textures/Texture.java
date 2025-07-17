@@ -32,7 +32,10 @@ public class Texture {
 
     public static List<Texture> textures = List.of(
             new PlaceHolderTex(0),
-            new TerrainTex(1)
+            new TerrainTex(1),
+            new ProjectilesTex(2),
+            new RobotsTex(3),
+            new WeaponsTex(4)
     );
 
     public Texture(String filepath, int texSize, int id) {

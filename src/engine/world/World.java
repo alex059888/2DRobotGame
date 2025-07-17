@@ -1,15 +1,21 @@
 package engine.world;
 
+import engine.entities.Entity;
 import engine.entities.Player;
 import engine.gfx.Camera;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class World {
     private TileCluster[][] clusters;
     private Player player;
+    private List<Entity> entities;
     private static int MAP_WIDTH = 3, MAP_HEIGHT = 3;
 
     public World() {
+        entities = new ArrayList<>();
         clusters = new TileCluster[MAP_WIDTH][MAP_HEIGHT];
         for(int i = 0; i < MAP_WIDTH; i++) {
             for(int j = 0; j < MAP_HEIGHT; j++) {
@@ -27,11 +33,18 @@ public class World {
 
     public void tick(double dt) {
         player.tick(dt);
+        for (Entity e : entities) e.tick(dt);
     }
 
     public void render() {
-        int x = (int) (player.getPos().x/(TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE));
-        int y = (int) (player.getPos().y/(TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE));
+        int a = 0;
+        if (player.getPos().x < 0)
+            a++;
+        int b = 0;
+        if (player.getPos().y < 0)
+            b++;
+        int x = (int) (player.getPos().x/(TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE*2)) -a;
+        int y = (int) (player.getPos().y/(TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE*2)) -b;
 
         for(int i = x-1; i <= x+1; i++) {
             for(int j = y-1; j <= y+1; j++) {
@@ -40,5 +53,6 @@ public class World {
             }
         }
         player.render();
+        for (Entity e : entities) e.render();
     }
 }

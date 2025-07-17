@@ -22,7 +22,7 @@ public class Game {
     private void init() {
         glfwInit();
         refreshColor = new Vector4f(0);
-        window = new Window(1280,1024,"RobotGame");
+        window = new Window(1280,720,"RobotGame");
 
         window.makeContextCurrent();
         glfwSwapInterval(1);

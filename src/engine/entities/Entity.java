@@ -9,15 +9,17 @@ import java.util.List;
 public class Entity {
     protected Vector3f pos, posFromOrigin;
     protected float rot, scale, globalRot;
-    protected List<Entity> entities;
+    protected List<Weapon> weapons;
     protected boolean independentRotation = false;
+    protected EntityType type;
 
-    public Entity(Vector3f pos) {
+    public Entity(Vector3f pos, EntityType type) {
         this.pos = pos;
+        this.type = type;
         posFromOrigin = new Vector3f();
         rot = 0;
         scale = 1;
-        entities = new ArrayList<>();
+        weapons = new ArrayList<>();
     }
 
     public Matrix4f transform() {
@@ -39,7 +41,7 @@ public class Entity {
     public void tick(double dt) {
         if (independentRotation)
             globalRot = rot;
-        for(Entity e : entities) {
+        for(Entity e : weapons) {
             Vector3f cp = new Vector3f(e.posFromOrigin);
             Matrix3f m = new Matrix3f().identity().rotateZ(Math.toRadians(rot));
             cp.mul(m);
@@ -51,7 +53,7 @@ public class Entity {
     }
 
     public void render() {
-        for(Entity e : entities)
+        for(Entity e : weapons)
             e.render();
     }
 
@@ -79,12 +81,12 @@ public class Entity {
         this.scale = scale;
     }
 
-    public void addEntity(Entity e) {
-        entities.add(e);
+    public void addWeapon(Weapon w) {
+        weapons.add(w);
     }
 
-    public Entity getEntity(int id) {
-        return entities.get(id);
+    public Weapon getWeapon(int id) {
+        return weapons.get(id);
     }
 
     public boolean isIndependentRotation() {

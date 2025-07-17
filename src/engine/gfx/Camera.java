@@ -1,11 +1,12 @@
 package engine.gfx;
 
 import engine.entities.Entity;
+import engine.entities.EntityType;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class Camera {
-    private static Entity fallowedEntity = new Entity(new Vector3f(0,0,0)) {
+    private static Entity fallowedEntity = new Entity(new Vector3f(0,0,0), EntityType.PLAYER) {
         @Override
         public void tick(double dt) {
 

@@ -1,23 +1,21 @@
 package engine.entities;
 
-import engine.entities.weals.Shenile;
 import engine.gfx.mesh.Mesh;
 import engine.gfx.textures.Texture;
 import engine.util.Handler;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-public class Creature extends Entity{
-    protected Mesh mesh;
+public class Weals extends Entity{
+    private Mesh mesh;
     protected static int texId = 3;
-    protected float speed = 5;
     protected Vector2f texPos;
-    protected Weals weals;
+    protected float speed;
 
-    public Creature(Vector3f pos, Vector2f texPos, EntityType type) {
-        super(pos, type);
+    public Weals(Vector3f pos, Vector3f origin, Vector2f texPos) {
+        super(pos,EntityType.LEGS);
         this.texPos = texPos;
-        setIndependentRotation(true);
+        posFromOrigin = new Vector3f(pos.x - origin.x, pos.y - origin.y, pos.z - origin.z);
         float[] verts = {
                 //x   y   z r g b a u v
                 -64,-64,0,1,1,1,1,
@@ -37,7 +35,19 @@ public class Creature extends Entity{
                 0,1,2,2,3,0
         } ;
         mesh = new Mesh(verts,ebos);
-        weals = new Shenile(pos);
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    @Override
+    public void tick(double dt) {
+        super.tick(dt);
     }
 
     @Override
@@ -46,13 +56,5 @@ public class Creature extends Entity{
         Handler.getCurentShader().setTransform(transform());
         Texture.getTexture(texId).bind();
         mesh.render();
-        weals.render();
-    }
-
-    @Override
-    public void tick(double dt) {
-        super.tick(dt);
-        weals.tick(dt);
-        weals.setGlobalRot(globalRot);
     }
 }

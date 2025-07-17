@@ -23,16 +23,16 @@ public class Tile {
     private List<Float> genVbo(Vector2i texPos, int texId, Vector3f pos) {
         float[] verts = {
                 //x y z r g b a u v
-                -(DEFAULT_TILE_SIZE /2)+pos.x,-(DEFAULT_TILE_SIZE /2)+pos.y,pos.z,1,1,1,1,
+                -(DEFAULT_TILE_SIZE+.01f)+pos.x,-(DEFAULT_TILE_SIZE+.01f)+pos.y,pos.z,1,1,1,1,
                 Texture.getTexCoord((float) texPos.x,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
                 Texture.getTexCoord((float) texPos.y+1,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
-                -(DEFAULT_TILE_SIZE /2)+pos.x, (DEFAULT_TILE_SIZE /2)+pos.y,pos.z,1,1,1,1,
+                -(DEFAULT_TILE_SIZE+.01f)+pos.x, (DEFAULT_TILE_SIZE)+pos.y,pos.z,1,1,1,1,
                 Texture.getTexCoord((float) texPos.x,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
                 Texture.getTexCoord((float) texPos.y,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
-                (DEFAULT_TILE_SIZE /2)+pos.x, (DEFAULT_TILE_SIZE /2)+pos.y,pos.z,1,1,1,1,
+                (DEFAULT_TILE_SIZE+.01f)+pos.x, (DEFAULT_TILE_SIZE+.01f)+pos.y,pos.z,1,1,1,1,
                 Texture.getTexCoord((float) texPos.x+1,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
                 Texture.getTexCoord((float) texPos.y,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
-                (DEFAULT_TILE_SIZE /2)+pos.x,-(DEFAULT_TILE_SIZE /2)+pos.y,pos.z,1,1,1,1,
+                (DEFAULT_TILE_SIZE+.01f)+pos.x,-(DEFAULT_TILE_SIZE+.01f)+pos.y,pos.z,1,1,1,1,
                 Texture.getTexCoord((float) texPos.x+1,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
                 Texture.getTexCoord((float) texPos.y+1,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE)
         };

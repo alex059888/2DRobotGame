@@ -26,7 +26,7 @@ public class TileCluster {
         for (int i = 0; i < CLUSTER_LENGTH; i++) {
             for (int j = 0; j < CLUSTER_LENGTH; j++) {
                 tiles[i][j] = new Tile(new Vector2i(0, 0), texId,
-                        new Vector3f(i*Tile.DEFAULT_TILE_SIZE, j*Tile.DEFAULT_TILE_SIZE, 0), ind);
+                        new Vector3f(i*Tile.DEFAULT_TILE_SIZE*2, j*Tile.DEFAULT_TILE_SIZE*2, 0), ind);
                 ind++;
             }
         }
