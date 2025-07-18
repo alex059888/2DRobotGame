@@ -1,52 +1,26 @@
 package engine.entities.template;
 
 import engine.entities.Entity;
+import engine.entities.EntityGenCarac;
 import engine.entities.weapons.Weapon;
 import org.joml.Math;
 import org.joml.Matrix3f;
 import org.joml.Vector3f;
 
-import java.util.Map;
-
 public class Template {
     private Slot[] slots;
     private Entity holder;
+    private String tag;
 
-    public static Map<String,Template> templates = Map.of("Small Tank",
-            new Template(new Slot[]{
-                    new Slot(new Vector3f(0,-24,0), SlotType.LARGE),
-                    new Slot(new Vector3f(16,28,0), SlotType.SMALL),
-                    new Slot(new Vector3f(-16,28,0), SlotType.SMALL)
-            }, null)
-    );
-
-    public static Template getTemplate(String template) {
-        return templates.get(template);
+    public static Template genTemplate(String tag, Entity holder) {
+        Template t = EntityGenCarac.templates(tag);
+        t.setHolder(holder);
+        return t;
     }
 
-    public Template(Template template, Entity holder) {
-        slots = new Slot[template.getSlots().length];
-        for (int i = 0; i < slots.length; i++) {
-            slots[i] = template.getSlots()[i];
-        }
-        this.holder = holder;
-    }
-
-    public Template(String template, Entity holder) {
-        slots = new Slot[templates.get(template).getSlots().length];
-        for (int i = 0; i < slots.length; i++) {
-            slots[i] = templates.get(template).getSlots()[i];
-        }
-        this.holder = holder;
-    }
-
-    public Template(Slot[] slots, Entity holder) {
+    public Template(Slot[] slots, Entity holder, String tag) {
         this.slots = slots;
-        this.holder = holder;
-    }
-
-    public Template(int slotNr, Entity holder) {
-        slots = new Slot[slotNr];
+        this.tag =tag;
         this.holder = holder;
     }
 
@@ -113,7 +87,7 @@ public class Template {
 
     public boolean setWeapon(String weapon, int id) {
         if (id >= 0 && id < slots.length) {
-            Weapon temp = Weapon.genWeapon(weapon, holder.getPos());
+            Weapon temp = EntityGenCarac.genWeapon(weapon, holder.getPos());
             if (temp != null) {
                 if (temp.getSlotType() != slots[id].getType())
                     return false;
@@ -122,5 +96,13 @@ public class Template {
             }
         }
         return false;
+    }
+
+    public void setHolder(Entity holder) {
+        this.holder = holder;
+    }
+
+    public String getTag() {
+        return tag;
     }
 }

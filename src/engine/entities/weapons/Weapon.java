@@ -12,27 +12,19 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class Weapon extends Entity {
-    protected int shotDelay;
     protected int currentShotDelay;
     protected ProjectileType projectile;
     protected Vector3f distFromCenter;
     protected SlotType slotType;
+    protected String tag;
 
-    public Weapon(Vector3f pos, Vector2f texPos, int shotDelay, ProjectileType projectile, Vector3f distFromCenter, SlotType slotType) {
+    public Weapon(Vector3f pos, Vector2f texPos, ProjectileType projectile, Vector3f distFromCenter, SlotType slotType, String tag) {
         super(pos, EntityType.WEAPON,64,texPos,4);
-        this.shotDelay = shotDelay;
+        this.tag = tag;
         this.slotType = slotType;
         this.distFromCenter = distFromCenter;
         this.projectile = projectile;
         currentShotDelay = 0;
-    }
-
-    public static Weapon genWeapon(String weapon, Vector3f pos) {
-        return switch (weapon) {
-            case "Small Turret" -> new SmallTurret(pos);
-            case "Large Turret" -> new LargeTurret(pos);
-            default -> null;
-        };
     }
 
     @Override
@@ -48,7 +40,7 @@ public class Weapon extends Entity {
 
     public void shot() {
         if (currentShotDelay <= 0) {
-            currentShotDelay = shotDelay;
+            currentShotDelay = projectile.getDelay();
             Matrix3f m = new Matrix3f().identity().rotateZ(Math.toRadians(rot));
             Vector3f cp = new Vector3f(distFromCenter).mul(m);
             Handler.getWorld().addProjectile(new Projectile(projectile, new Vector3f(pos).add(cp),rot));
@@ -57,5 +49,13 @@ public class Weapon extends Entity {
 
     public SlotType getSlotType() {
         return slotType;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

@@ -1,21 +1,33 @@
 package engine.world;
 
 import engine.entities.Player;
+import engine.entities.emenyes.Enemy;
+import engine.entities.emenyes.SmallTank;
 import engine.entities.projectiles.Projectile;
 import engine.gfx.Camera;
+import org.joml.Math;
+import org.joml.Matrix3f;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class World {
     private TileCluster[][] clusters;
     private Player player;
     private List<Projectile> bullets;
-    private static int MAP_WIDTH = 3, MAP_HEIGHT = 3;
+    private List<Enemy> enemies;
+    private int timeTillNextSpawn;
+
+    private static final int MAP_WIDTH = 3;
+    private static final int MAP_HEIGHT = 3;
+    private static float maxDistFormPlayer = 1600.0f, minDistFromPlayer = 800.0f;
 
     public World() {
         bullets = new ArrayList<>();
+        timeTillNextSpawn = 0;
+        enemies = new ArrayList<>();
         clusters = new TileCluster[MAP_WIDTH][MAP_HEIGHT];
         for(int i = 0; i < MAP_WIDTH; i++) {
             for(int j = 0; j < MAP_HEIGHT; j++) {
@@ -34,6 +46,9 @@ public class World {
     public void tick(double dt) {
         player.tick(dt);
         for (Projectile e : bullets) e.tick(dt);
+        for (Enemy e : enemies) e.tick(dt);
+        timeTillNextSpawn--;
+        spawnEnemy();
     }
 
     public void render() {
@@ -53,7 +68,9 @@ public class World {
             }
         }
         for (Projectile e : bullets) e.render();
+        for (Enemy e : enemies) e.render();
         bullets.removeIf(projectile -> projectile.getLifeSpan() <= 0);
+        enemies.removeIf(projectile -> projectile.getHP() <= 0);
         player.render();
     }
 
@@ -63,5 +80,21 @@ public class World {
 
     public List<Projectile> getBullets() {
         return bullets;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void spawnEnemy() {
+        if (timeTillNextSpawn <= 0) {
+            Random random = new Random();
+            timeTillNextSpawn += random.nextInt(10, 100);
+            if (enemies.size() <= 30){
+                Matrix3f m = new Matrix3f().identity().rotateZ(Math.toRadians(random.nextFloat(0, 360)));
+                Vector3f v = new Vector3f(0, random.nextFloat(minDistFromPlayer, maxDistFormPlayer), 0).mul(m).add(player.getPos());
+                enemies.add(new SmallTank(v));
+            }
+        }
     }
 }

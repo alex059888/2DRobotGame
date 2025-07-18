@@ -3,6 +3,8 @@ package engine.entities.template;
 import engine.entities.weapons.Weapon;
 import org.joml.Vector3f;
 
+import javax.management.ObjectInstance;
+
 public class Slot {
     private Vector3f posFromOrg;
     private Weapon weapon;
@@ -13,6 +15,12 @@ public class Slot {
         this.weapon = weapon;
         this.type = type;
         weapon.setPos(posFromOrg);
+    }
+
+    public Slot(Slot slot) {
+        this.posFromOrg = new Vector3f(slot.getPosFromOrg());
+        this.weapon = null;
+        this.type = slot.type;
     }
 
     public Slot(Vector3f posFromOrg, SlotType type) {

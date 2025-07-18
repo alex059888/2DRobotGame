@@ -12,9 +12,9 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Player extends Creature{
 
     public Player(Vector3f pos) {
-        super(pos, new Vector2f(1,0), EntityType.PLAYER);
+        super(pos, new Vector2f(1,0), EntityType.PLAYER, 100);
 
-        template = new Template("Small Tank", this);
+        template = Template.genTemplate("Small Tank", this);
         template.setWeapon("Large Turret",0);
         template.setWeapon("Small Turret",1);
         template.setWeapon("Small Turret",2);
@@ -45,7 +45,6 @@ public class Player extends Creature{
 
     @Override
     public void render() {
-        template.render();
         super.render();
     }
 }
