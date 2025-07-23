@@ -25,14 +25,14 @@ public class EntityGenCarac {
         };
     }
 
-    public static Weapon genWeapon(Weapon weapon, Vector3f pos) {
-        return genWeapon(weapon.getTag(), pos);
+    public static Weapon genWeapon(Weapon weapon, Vector3f pos, EntityType shotter) {
+        return genWeapon(weapon.getTag(), pos, shotter);
     }
 
-    public static Weapon genWeapon(String weapon, Vector3f pos) {
+    public static Weapon genWeapon(String weapon, Vector3f pos, EntityType shotter) {
         return switch (weapon) {
-            case "Small Turret" -> new SmallTurret(pos);
-            case "Large Turret" -> new LargeTurret(pos);
+            case "Small Turret" -> new SmallTurret(pos, shotter);
+            case "Large Turret" -> new LargeTurret(pos, shotter);
             default -> null;
         };
     }

@@ -24,17 +24,17 @@ public class Tile {
         float[] verts = {
                 //x y z r g b a u v
                 -(DEFAULT_TILE_SIZE+.01f)+pos.x,-(DEFAULT_TILE_SIZE+.01f)+pos.y,pos.z,1,1,1,1,
-                Texture.getTexCoord((float) texPos.x,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
-                Texture.getTexCoord((float) texPos.y+1,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
+                Texture.getTexCoord((float) texPos.x,Texture.getTexture(texId).getTexSize().x, (int) DEFAULT_TILE_SIZE),
+                Texture.getTexCoord((float) texPos.y+1,Texture.getTexture(texId).getTexSize().y, (int) DEFAULT_TILE_SIZE),
                 -(DEFAULT_TILE_SIZE+.01f)+pos.x, (DEFAULT_TILE_SIZE)+pos.y,pos.z,1,1,1,1,
-                Texture.getTexCoord((float) texPos.x,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
-                Texture.getTexCoord((float) texPos.y,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
+                Texture.getTexCoord((float) texPos.x,Texture.getTexture(texId).getTexSize().x, (int) DEFAULT_TILE_SIZE),
+                Texture.getTexCoord((float) texPos.y,Texture.getTexture(texId).getTexSize().y, (int) DEFAULT_TILE_SIZE),
                 (DEFAULT_TILE_SIZE+.01f)+pos.x, (DEFAULT_TILE_SIZE+.01f)+pos.y,pos.z,1,1,1,1,
-                Texture.getTexCoord((float) texPos.x+1,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
-                Texture.getTexCoord((float) texPos.y,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
+                Texture.getTexCoord((float) texPos.x+1,Texture.getTexture(texId).getTexSize().x, (int) DEFAULT_TILE_SIZE),
+                Texture.getTexCoord((float) texPos.y,Texture.getTexture(texId).getTexSize().y, (int) DEFAULT_TILE_SIZE),
                 (DEFAULT_TILE_SIZE+.01f)+pos.x,-(DEFAULT_TILE_SIZE+.01f)+pos.y,pos.z,1,1,1,1,
-                Texture.getTexCoord((float) texPos.x+1,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE),
-                Texture.getTexCoord((float) texPos.y+1,Texture.getTexture(texId).getTexSize(), (int) DEFAULT_TILE_SIZE)
+                Texture.getTexCoord((float) texPos.x+1,Texture.getTexture(texId).getTexSize().x, (int) DEFAULT_TILE_SIZE),
+                Texture.getTexCoord((float) texPos.y+1,Texture.getTexture(texId).getTexSize().y, (int) DEFAULT_TILE_SIZE)
         };
         List<Float> f = new ArrayList<>();
         for (float c : verts)

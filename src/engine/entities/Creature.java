@@ -10,14 +10,18 @@ public class Creature extends Entity{
     protected float speed = 5;
     protected Weals weals;
     protected Template template;
-    protected int HP, MHP;
+    protected int hp, maxHP, shield, maxShield;
+    protected float collRad;
 
-    public Creature(Vector3f pos, Vector2f texPos, EntityType type, int MHP) {
+    public Creature(Vector3f pos, Vector2f texPos, EntityType type, int maxHP, float collRad, int maxShield) {
         super(pos, type,64,texPos, 3);
         setIndependentRotation(true);
         weals = new Shenile(pos);
-        this.MHP = MHP;
-        HP = MHP;
+        this.maxHP = maxHP;
+        hp = maxHP;
+        this.collRad = collRad;
+        shield = maxShield;
+        this.maxShield = maxShield;
     }
 
     @Override
@@ -35,19 +39,52 @@ public class Creature extends Entity{
         weals.setGlobalRot(globalRot);
     }
 
-    public int getHP() {
-        return HP;
+    public int getHp() {
+        return hp;
     }
 
-    public void setHP(int HP) {
-        this.HP = HP;
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 
-    public int getMHP() {
-        return MHP;
+    public int getMaxHP() {
+        return maxHP;
     }
 
-    public void setMHP(int MHP) {
-        this.MHP = MHP;
+    public void setMaxHP(int maxHP) {
+        this.maxHP = maxHP;
+    }
+
+    public float getCollRad() {
+        return collRad;
+    }
+
+    public static boolean isCollision(Creature creature, Creature creature1) {
+        float dist = new Vector2f(creature.getPos().x-creature1.getPos().x,creature.getPos().y-creature1.getPos().y).length();
+        return (dist-creature.getCollRad()-creature1.getCollRad())<=0;
+    }
+
+    public void damage(int dmg) {
+        shield -= dmg;
+        if (shield < 0) {
+            hp += shield;
+            shield = 0;
+        }
+    }
+
+    public int getShield() {
+        return shield;
+    }
+
+    public void setShield(int shield) {
+        this.shield = shield;
+    }
+
+    public int getMaxShield() {
+        return maxShield;
+    }
+
+    public void setMaxShield(int maxShield) {
+        this.maxShield = maxShield;
     }
 }

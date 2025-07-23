@@ -13,12 +13,15 @@ import static org.lwjgl.opengl.GL11.glViewport;
 public class Window {
     private long window;
     private int width, height;
+    private final int defaultWidth, defaultHeight;
     private String title;
 
     public Window(int width, int height, String title) {
         this.width = width;
         this.height = height;
         this.title = title;
+        this.defaultHeight = height;
+        this.defaultWidth = width;
 
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, 1);
@@ -64,5 +67,13 @@ public class Window {
         glViewport(0,0,width,height);
         this.width = width;
         this.height = height;
+    }
+
+    public float getDefaultWidth() {
+        return defaultWidth;
+    }
+
+    public float getDefaultHeight() {
+        return defaultHeight;
     }
 }

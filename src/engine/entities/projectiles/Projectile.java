@@ -1,20 +1,27 @@
 package engine.entities.projectiles;
 
+import engine.entities.Creature;
 import engine.entities.Entity;
 import engine.entities.EntityType;
 import org.joml.Math;
 import org.joml.Matrix3f;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class Projectile extends Entity {
     protected float speed;
-    protected int lifeSpan;
+    protected int lifeSpan, dmg;
+    protected EntityType shotter;
+    protected float collRad;
 
-    public Projectile(ProjectileType type, Vector3f pos, float rot) {
+    public Projectile(ProjectileType type, Vector3f pos, float rot, EntityType shotter) {
         super(new Vector3f(pos), EntityType.BULLET, 8, type.getTexPos(), 2);
         this.rot = rot;
+        this.shotter = shotter;
         lifeSpan = type.getLifeSpan();
         speed = type.getSpeed();
+        collRad = type.getCollRad();
+        this.dmg = type.getDmg();
         independentRotation = true;
     }
 
@@ -32,7 +39,23 @@ public class Projectile extends Entity {
         lifeSpan--;
     }
 
+    public void collide(Creature creature) {
+        float dist = new Vector2f(creature.getPos().x-pos.x,creature.getPos().y-pos.y).length();
+        if ((dist-creature.getCollRad()-collRad)<=0 && shotter != creature.getType()) {
+            creature.damage(dmg);
+            lifeSpan = 0;
+        }
+    }
+
     public int getLifeSpan() {
         return lifeSpan;
+    }
+
+    public EntityType getShotter() {
+        return shotter;
+    }
+
+    public float getCollRad() {
+        return collRad;
     }
 }

@@ -1,5 +1,6 @@
 package engine.gfx.textures;
 
+import org.joml.Vector2i;
 import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
@@ -26,7 +27,7 @@ import static org.lwjgl.stb.STBImage.stbi_load;
 public class Texture {
     private String filepath;
     private int texID;
-    private int texSize;
+    private Vector2i texSize;
 
     private final int id;
 
@@ -35,10 +36,15 @@ public class Texture {
             new TerrainTex(1),
             new ProjectilesTex(2),
             new RobotsTex(3),
-            new WeaponsTex(4)
+            new WeaponsTex(4),
+            new ButtonTex(5),
+            new BackGroundTex(6),
+            new NumbersTex(7),
+            new BarsTex(8),
+            new BarsOutTex(9)
     );
 
-    public Texture(String filepath, int texSize, int id) {
+    public Texture(String filepath, Vector2i texSize, int id) {
         this.filepath = filepath;
         this.id = id;
         this.texSize = texSize;
@@ -94,11 +100,11 @@ public class Texture {
         return textures.get(id);
     }
 
-    public static void addTexture(String path, int texSize, int id) {
+    public static void addTexture(String path, Vector2i texSize, int id) {
         textures.add(new Texture(path, texSize, id));
     }
 
-    public int getTexSize() {
+    public Vector2i getTexSize() {
         return texSize;
     }
 

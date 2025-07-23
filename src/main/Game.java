@@ -3,7 +3,7 @@ package main;
 import engine.gfx.Camera;
 import engine.gfx.Window;
 import engine.io.MouseListener;
-import engine.scenes.GameScene;
+import engine.scenes.MenuScene;
 import engine.util.Handler;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL;
@@ -17,9 +17,11 @@ public class Game {
     private Window window;
     private Vector4f refreshColor;
     public static double FPS = 60;
+    private boolean close;
 
     private void init() {
         glfwInit();
+        close = false;
         refreshColor = new Vector4f(0);
         window = new Window(1280,720,"RobotGame");
 
@@ -34,8 +36,9 @@ public class Game {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         Camera.setOrtho(Camera.getOrtho(window.getWidth(),window.getHeight(),100f,-100f));
         Handler.setWindow(window);
+        Handler.setGame(this);
 
-        Handler.setCurrentScene(new GameScene());
+        Handler.setCurrentScene(new MenuScene());
     }
 
     public void run() {
@@ -50,7 +53,7 @@ public class Game {
         double now, lastTime = (double) System.nanoTime()/1000000000;
         double cdt;
 
-        while (!window.shouldClose()) {
+        while (!window.shouldClose() && !close) {
             now = (double) System.nanoTime()/1000000000;
             cdt = (now - lastTime) / timePerFrame;
             dt += cdt;
@@ -86,5 +89,9 @@ public class Game {
 
     public Window getWindow() {
         return window;
+    }
+
+    public void close() {
+        close = true;
     }
 }

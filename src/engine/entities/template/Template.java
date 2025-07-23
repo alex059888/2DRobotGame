@@ -2,6 +2,7 @@ package engine.entities.template;
 
 import engine.entities.Entity;
 import engine.entities.EntityGenCarac;
+import engine.entities.EntityType;
 import engine.entities.weapons.Weapon;
 import org.joml.Math;
 import org.joml.Matrix3f;
@@ -85,9 +86,9 @@ public class Template {
         return false;
     }
 
-    public boolean setWeapon(String weapon, int id) {
+    public boolean setWeapon(String weapon, int id, EntityType shotter) {
         if (id >= 0 && id < slots.length) {
-            Weapon temp = EntityGenCarac.genWeapon(weapon, holder.getPos());
+            Weapon temp = EntityGenCarac.genWeapon(weapon, holder.getPos(), shotter);
             if (temp != null) {
                 if (temp.getSlotType() != slots[id].getType())
                     return false;

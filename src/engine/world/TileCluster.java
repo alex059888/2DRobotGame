@@ -21,7 +21,7 @@ public class TileCluster {
     public TileCluster(Vector3f pos, int texId) {
         tiles = new Tile[CLUSTER_LENGTH][CLUSTER_LENGTH];
         this.texId = texId;
-        this.pos = pos;
+        this.pos = new Vector3f(pos);
         int ind = 0;
         for (int i = 0; i < CLUSTER_LENGTH; i++) {
             for (int j = 0; j < CLUSTER_LENGTH; j++) {
@@ -54,7 +54,8 @@ public class TileCluster {
         mesh = new Mesh(v,e);
     }
 
-    public void tick(double dt) {}
+    public void tick(double dt) {
+    }
 
     public void render() {
         Handler.getCurentShader().setTransform(transform());

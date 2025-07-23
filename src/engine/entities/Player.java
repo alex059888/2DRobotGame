@@ -10,14 +10,20 @@ import org.joml.Math;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Player extends Creature{
+    public static int mBP = 100, delayConsBP = 2;
+    private int boostPoints, cdc;
+    private boolean rest;
 
     public Player(Vector3f pos) {
-        super(pos, new Vector2f(1,0), EntityType.PLAYER, 100);
+        super(pos, new Vector2f(1,0), EntityType.PLAYER, 100,32, 100);
 
         template = Template.genTemplate("Small Tank", this);
-        template.setWeapon("Large Turret",0);
-        template.setWeapon("Small Turret",1);
-        template.setWeapon("Small Turret",2);
+        template.setWeapon("Large Turret",0, EntityType.PLAYER);
+        template.setWeapon("Small Turret",1, EntityType.PLAYER);
+        template.setWeapon("Small Turret",2, EntityType.PLAYER);
+        boostPoints = mBP;
+        cdc = 0;
+        rest = false;
     }
 
     @Override
@@ -31,6 +37,25 @@ public class Player extends Creature{
             rot += (float) (2*dt);
         if(KeyListener.isKeyPressed(GLFW_KEY_RIGHT) || KeyListener.isKeyPressed(GLFW_KEY_D))
             rot -= (float) (2*dt);
+        if((KeyListener.isKeyPressed(GLFW_KEY_RIGHT_SHIFT) || KeyListener.isKeyPressed(GLFW_KEY_LEFT_SHIFT)) && boostPoints > 0 && !rest && walk.y > 0) {
+            walk.y *= 2;
+            cdc++;
+            if (cdc > delayConsBP) cdc = 0;
+            if (cdc == delayConsBP) {
+                cdc-=delayConsBP;
+                boostPoints--;
+            }
+            if (boostPoints <= 0)
+                rest = true;
+        } else {
+            cdc++;
+            if (cdc >= delayConsBP * 2 && !(KeyListener.isKeyPressed(GLFW_KEY_RIGHT_SHIFT) || KeyListener.isKeyPressed(GLFW_KEY_LEFT_SHIFT))) {
+                cdc = 0;
+                boostPoints++;
+            }
+            if (boostPoints > 20)
+                rest = false;
+        }
         Matrix3f m = new Matrix3f().identity().rotateZ(Math.toRadians(rot));
         walk.mul(m);
         pos.add(walk);

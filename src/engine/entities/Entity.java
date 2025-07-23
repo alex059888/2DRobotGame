@@ -8,41 +8,79 @@ import org.joml.Math;
 
 public class Entity {
     protected Vector3f pos;
-    protected float rot, scale, globalRot;
+    protected float rot, globalRot;
     protected boolean independentRotation = false;
     protected EntityType type;
-    protected int subTexLength;
     protected Vector2f texPos;
     protected Mesh mesh;
     protected int texId;
+    protected Vector2i subTexLength;
+    protected Vector3f scale;
 
     public Entity(Vector3f pos, EntityType type, int subTexLength, Vector2f texPos, int texId) {
         this.pos = pos;
         this.type = type;
-        this.subTexLength = subTexLength;
         this.texPos = texPos;
         this.texId = texId;
+        this.subTexLength = new Vector2i(subTexLength);
         rot = 0;
-        scale = 1;
+        scale = new Vector3f(1);
+        mesh = genMesh(texPos);
+    }
+
+    public Entity(Vector3f pos, EntityType type, Vector2i subTexLength, Vector2f texPos, int texId) {
+        this.pos = pos;
+        this.type = type;
+        this.texPos = texPos;
+        this.texId = texId;
+        this.subTexLength = subTexLength;
+        rot = 0;
+        scale = new Vector3f(1);
+        mesh = genMesh(texPos);
+    }
+
+    protected Mesh genMesh(Vector2f texPos) {
         float[] verts = {
                 //x   y   z r g b a u v
-                -subTexLength,-subTexLength,0,1,1,1,1,
-                Texture.getTexCoord(texPos.x,Texture.getTexture(texId).getTexSize(), subTexLength),
-                Texture.getTexCoord(texPos.y+1,Texture.getTexture(texId).getTexSize(), subTexLength),
-                -subTexLength, subTexLength,0,1,1,1,1,
-                Texture.getTexCoord(texPos.x,Texture.getTexture(texId).getTexSize(), subTexLength),
-                Texture.getTexCoord(texPos.y,Texture.getTexture(texId).getTexSize(), subTexLength),
-                subTexLength, subTexLength,0,1,1,1,1,
-                Texture.getTexCoord(texPos.x+1,Texture.getTexture(texId).getTexSize(), subTexLength),
-                Texture.getTexCoord(texPos.y,Texture.getTexture(texId).getTexSize(), subTexLength),
-                subTexLength,-subTexLength,0,1,1,1,1,
-                Texture.getTexCoord(texPos.x+1,Texture.getTexture(texId).getTexSize(), subTexLength),
-                Texture.getTexCoord(texPos.y+1,Texture.getTexture(texId).getTexSize(), subTexLength)
+                -subTexLength.x,-subTexLength.y,0,1,1,1,1,
+                Texture.getTexCoord(texPos.x,Texture.getTexture(texId).getTexSize().x, subTexLength.x),
+                Texture.getTexCoord(texPos.y+1,Texture.getTexture(texId).getTexSize().y, subTexLength.y),
+                -subTexLength.x, subTexLength.y,0,1,1,1,1,
+                Texture.getTexCoord(texPos.x,Texture.getTexture(texId).getTexSize().x, subTexLength.x),
+                Texture.getTexCoord(texPos.y,Texture.getTexture(texId).getTexSize().y, subTexLength.y),
+                subTexLength.x, subTexLength.y,0,1,1,1,1,
+                Texture.getTexCoord(texPos.x+1,Texture.getTexture(texId).getTexSize().x, subTexLength.x),
+                Texture.getTexCoord(texPos.y,Texture.getTexture(texId).getTexSize().y, subTexLength.y),
+                subTexLength.x,-subTexLength.y,0,1,1,1,1,
+                Texture.getTexCoord(texPos.x+1,Texture.getTexture(texId).getTexSize().x, subTexLength.x),
+                Texture.getTexCoord(texPos.y+1,Texture.getTexture(texId).getTexSize().y, subTexLength.y)
         };
         int[] ebos = {
                 0,1,2,2,3,0
         } ;
-        mesh = new Mesh(verts, ebos);
+        return new Mesh(verts, ebos);
+    }
+
+    protected Mesh genMesh(Vector2f texPos, Vector2f size) {
+        float[] verts = {
+                //x   y   z r g b a u v
+                -size.x,-size.y,0,1,1,1,1,
+                Texture.getTexCoord(texPos.x,Texture.getTexture(texId).getTexSize().x, subTexLength.x),
+                Texture.getTexCoord(texPos.y+1,Texture.getTexture(texId).getTexSize().y, subTexLength.y),
+                -size.x, size.y,0,1,1,1,1,
+                Texture.getTexCoord(texPos.x,Texture.getTexture(texId).getTexSize().x, subTexLength.x),
+                Texture.getTexCoord(texPos.y,Texture.getTexture(texId).getTexSize().y, subTexLength.y),
+                size.x, size.y,0,1,1,1,1,
+                Texture.getTexCoord(texPos.x+1,Texture.getTexture(texId).getTexSize().x, subTexLength.x),
+                Texture.getTexCoord(texPos.y,Texture.getTexture(texId).getTexSize().y, subTexLength.y),
+                size.x,-size.y,0,1,1,1,1,
+                Texture.getTexCoord(texPos.x+1,Texture.getTexture(texId).getTexSize().x, subTexLength.x),
+                Texture.getTexCoord(texPos.y+1,Texture.getTexture(texId).getTexSize().y, subTexLength.y)
+        };
+        int[] ebos = {
+                0,1,2,2,3,0
+        } ;
+        return new Mesh(verts, ebos);
     }
 
     public Matrix4f transform() {
@@ -88,11 +126,11 @@ public class Entity {
         this.rot = rot;
     }
 
-    public float getScale() {
+    public Vector3f getScale() {
         return scale;
     }
 
-    public void setScale(float scale) {
+    public void setScale(Vector3f scale) {
         this.scale = scale;
     }
 
@@ -110,5 +148,21 @@ public class Entity {
 
     public void setGlobalRot(float globalRot) {
         this.globalRot = globalRot;
+    }
+
+    public EntityType getType() {
+        return type;
+    }
+
+    public void setScaleX(float x) {
+        scale.x = x;
+    }
+
+    public void setScaleY(float y) {
+        scale.y = y;
+    }
+
+    public void setScaleZ(float z) {
+        scale.z = z;
     }
 }

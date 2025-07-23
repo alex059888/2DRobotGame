@@ -1,5 +1,6 @@
 package engine.gfx;
 
+import engine.entities.BlanckEntity;
 import engine.entities.Entity;
 import engine.entities.EntityType;
 import org.joml.Matrix4f;
@@ -7,17 +8,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class Camera {
-    private static Entity fallowedEntity = new Entity(new Vector3f(0,0,0), EntityType.PLAYER,0,new Vector2f(0,0),0) {
-        @Override
-        public void tick(double dt) {
-
-        }
-
-        @Override
-        public void render() {
-
-        }
-    };
+    private static Entity fallowedEntity = new BlanckEntity();
     private static Matrix4f ortho;
 
     public static Matrix4f getOrtho(int width, int height, float zFar, float zNear) {

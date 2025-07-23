@@ -1,5 +1,6 @@
 package engine.entities.template;
 
+import engine.entities.EntityType;
 import engine.entities.weapons.Weapon;
 import org.joml.Vector3f;
 

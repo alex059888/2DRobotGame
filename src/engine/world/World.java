@@ -1,10 +1,16 @@
 package engine.world;
 
+import engine.entities.Entity;
+import engine.entities.EntityType;
 import engine.entities.Player;
 import engine.entities.emenyes.Enemy;
+import engine.entities.emenyes.SmallSandTank;
 import engine.entities.emenyes.SmallTank;
 import engine.entities.projectiles.Projectile;
+import engine.entities.ui.HealthAndShieldBars;
 import engine.gfx.Camera;
+import engine.scenes.GameOverScene;
+import engine.util.Handler;
 import org.joml.Math;
 import org.joml.Matrix3f;
 import org.joml.Vector3f;
@@ -19,6 +25,7 @@ public class World {
     private List<Projectile> bullets;
     private List<Enemy> enemies;
     private int timeTillNextSpawn;
+    private Entity healthBar;
 
     private static final int MAP_WIDTH = 3;
     private static final int MAP_HEIGHT = 3;
@@ -29,6 +36,7 @@ public class World {
         timeTillNextSpawn = 0;
         enemies = new ArrayList<>();
         clusters = new TileCluster[MAP_WIDTH][MAP_HEIGHT];
+        Handler.setScore(0);
         for(int i = 0; i < MAP_WIDTH; i++) {
             for(int j = 0; j < MAP_HEIGHT; j++) {
                 Vector3f pos = new Vector3f(
@@ -41,14 +49,25 @@ public class World {
         }
         player = new Player(new Vector3f(TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE*MAP_WIDTH/2,TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE*MAP_HEIGHT/2,0.0f));
         Camera.setFallowedEntity(player);
+        healthBar = new HealthAndShieldBars(player.getPos());
     }
 
     public void tick(double dt) {
+        if (player.getHp() <= 0) Handler.setCurrentScene(new GameOverScene());
         player.tick(dt);
-        for (Projectile e : bullets) e.tick(dt);
+        for (Projectile e : bullets) {
+            e.tick(dt);
+            if (e.getShotter() == EntityType.ENEMY)
+                e.collide(player);
+            else
+                for (Enemy f : enemies) e.collide(f);
+        }
         for (Enemy e : enemies) e.tick(dt);
         timeTillNextSpawn--;
+        bullets.removeIf(projectile -> projectile.getLifeSpan() <= 0);
+        enemies.removeIf(enemy -> enemy.getHp() <= 0);
         spawnEnemy();
+        healthBar.tick(dt);
     }
 
     public void render() {
@@ -58,20 +77,20 @@ public class World {
         int b = 0;
         if (player.getPos().y < 0)
             b++;
-        int x = (int) (player.getPos().x/(TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE*2)) -a;
-        int y = (int) (player.getPos().y/(TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE*2)) -b;
+        int x = (int) (player.getPos().x/(TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE)) -a;
+        int y = (int) (player.getPos().y/(TileCluster.CLUSTER_LENGTH*Tile.DEFAULT_TILE_SIZE)) -b;
 
-        for(int i = x-1; i <= x+1; i++) {
-            for(int j = y-1; j <= y+1; j++) {
-                if(i >= 0 && i < MAP_WIDTH && j >= 0 && j < MAP_HEIGHT)
+        for(int i = x-2; i <= x+2; i++) {
+            for(int j = y-2; j <= y+2; j++) {
+                if(i >= 0 && i < MAP_WIDTH && j >= 0 && j < MAP_HEIGHT) {
                     clusters[i][j].render();
+                }
             }
         }
         for (Projectile e : bullets) e.render();
         for (Enemy e : enemies) e.render();
-        bullets.removeIf(projectile -> projectile.getLifeSpan() <= 0);
-        enemies.removeIf(projectile -> projectile.getHP() <= 0);
         player.render();
+        healthBar.render();
     }
 
     public void addProjectile(Projectile e) {
@@ -93,8 +112,17 @@ public class World {
             if (enemies.size() <= 30){
                 Matrix3f m = new Matrix3f().identity().rotateZ(Math.toRadians(random.nextFloat(0, 360)));
                 Vector3f v = new Vector3f(0, random.nextFloat(minDistFromPlayer, maxDistFormPlayer), 0).mul(m).add(player.getPos());
-                enemies.add(new SmallTank(v));
+                enemies.add(
+                        switch (random.nextInt(0,2)) {
+                            case 1 -> new SmallSandTank(v);
+                            default -> new SmallTank(v);
+                        }
+                );
             }
         }
+    }
+
+    public static float getMaxDistFormPlayer() {
+        return maxDistFormPlayer;
     }
 }

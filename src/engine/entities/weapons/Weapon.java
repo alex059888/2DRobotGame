@@ -17,9 +17,11 @@ public class Weapon extends Entity {
     protected Vector3f distFromCenter;
     protected SlotType slotType;
     protected String tag;
+    protected EntityType shotter;
 
-    public Weapon(Vector3f pos, Vector2f texPos, ProjectileType projectile, Vector3f distFromCenter, SlotType slotType, String tag) {
+    public Weapon(Vector3f pos, Vector2f texPos, ProjectileType projectile, Vector3f distFromCenter, SlotType slotType, String tag, EntityType shotter) {
         super(pos, EntityType.WEAPON,64,texPos,4);
+        this.shotter = shotter;
         this.tag = tag;
         this.slotType = slotType;
         this.distFromCenter = distFromCenter;
@@ -43,7 +45,7 @@ public class Weapon extends Entity {
             currentShotDelay = projectile.getDelay();
             Matrix3f m = new Matrix3f().identity().rotateZ(Math.toRadians(rot));
             Vector3f cp = new Vector3f(distFromCenter).mul(m);
-            Handler.getWorld().addProjectile(new Projectile(projectile, new Vector3f(pos).add(cp),rot));
+            Handler.getWorld().addProjectile(new Projectile(projectile, new Vector3f(pos).add(cp),rot,shotter));
         }
     }
 
