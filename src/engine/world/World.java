@@ -29,8 +29,8 @@ public class World {
     private int timeTillNextSpawn;
     private Entity healthBar;
 
-    private static final int MAP_WIDTH = 3;
-    private static final int MAP_HEIGHT = 3;
+    private static final int MAP_WIDTH = 33;
+    private static final int MAP_HEIGHT = 33;
     private static float maxDistFormPlayer = 1600.0f, minDistFromPlayer = 800.0f;
 
     public World() {
