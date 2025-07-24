@@ -12,6 +12,7 @@ public class Template {
     private Slot[] slots;
     private Entity holder;
     private String tag;
+    private int dmgMul;
 
     public static Template genTemplate(String tag, Entity holder) {
         Template t = EntityGenCarac.templates(tag);
@@ -23,6 +24,7 @@ public class Template {
         this.slots = slots;
         this.tag =tag;
         this.holder = holder;
+        dmgMul = 1;
     }
 
     public void setSlot(Slot slot, int id) {
@@ -62,7 +64,7 @@ public class Template {
     public void shot() {
         for (Slot s : slots)
             if (s != null)
-                s.shot();
+                s.shot(dmgMul);
     }
 
     public void setRotations(float rot) {
@@ -105,5 +107,13 @@ public class Template {
 
     public String getTag() {
         return tag;
+    }
+
+    public int getDmgMul() {
+        return dmgMul;
+    }
+
+    public void setDmgMul(int dmgMul) {
+        this.dmgMul = dmgMul;
     }
 }

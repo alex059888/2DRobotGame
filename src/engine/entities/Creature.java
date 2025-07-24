@@ -12,6 +12,7 @@ public class Creature extends Entity{
     protected Template template;
     protected int hp, maxHP, shield, maxShield;
     protected float collRad;
+    protected int delayTilDmg;
 
     public Creature(Vector3f pos, Vector2f texPos, EntityType type, int maxHP, float collRad, int maxShield) {
         super(pos, type,64,texPos, 3);
@@ -22,6 +23,7 @@ public class Creature extends Entity{
         this.collRad = collRad;
         shield = maxShield;
         this.maxShield = maxShield;
+        delayTilDmg = 0;
     }
 
     @Override
@@ -37,6 +39,8 @@ public class Creature extends Entity{
         template.tick(dt);
         weals.tick(dt);
         weals.setGlobalRot(globalRot);
+        delayTilDmg--;
+        if (delayTilDmg < 0) delayTilDmg = 0;
     }
 
     public int getHp() {
@@ -86,5 +90,19 @@ public class Creature extends Entity{
 
     public void setMaxShield(int maxShield) {
         this.maxShield = maxShield;
+    }
+
+    public void collide(Creature creature) {
+        Vector2f v = new Vector2f(creature.getPos().x-pos.x,creature.getPos().y-pos.y);
+        float dist = v.length();
+        if ((dist-creature.getCollRad()-collRad)<=0) {
+            pos.add(new Vector3f(-v.x/20,-v.y/20,0));
+            creature.pos.add(new Vector3f(v.x/30,v.y/30,0));
+            if (creature.type != EntityType.ENEMY && delayTilDmg <= 0) {
+                damage(20);
+                creature.damage(10);
+                delayTilDmg = 10;
+            }
+        }
     }
 }

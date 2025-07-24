@@ -1,10 +1,7 @@
 package engine.entities.template;
 
-import engine.entities.EntityType;
 import engine.entities.weapons.Weapon;
 import org.joml.Vector3f;
-
-import javax.management.ObjectInstance;
 
 public class Slot {
     private Vector3f posFromOrg;
@@ -63,8 +60,8 @@ public class Slot {
         this.type = type;
     }
 
-    public void shot() {
+    public void shot(int dmgMul) {
         if (weapon != null)
-            weapon.shot();
+            weapon.shot(dmgMul);
     }
 }

@@ -6,6 +6,7 @@ import engine.entities.Player;
 import engine.entities.emenyes.Enemy;
 import engine.entities.emenyes.SmallSandTank;
 import engine.entities.emenyes.SmallTank;
+import engine.entities.powerups.Powerup;
 import engine.entities.projectiles.Projectile;
 import engine.entities.ui.HealthAndShieldBars;
 import engine.gfx.Camera;
@@ -24,6 +25,7 @@ public class World {
     private Player player;
     private List<Projectile> bullets;
     private List<Enemy> enemies;
+    private List<Powerup> powerups;
     private int timeTillNextSpawn;
     private Entity healthBar;
 
@@ -35,6 +37,7 @@ public class World {
         bullets = new ArrayList<>();
         timeTillNextSpawn = 0;
         enemies = new ArrayList<>();
+        powerups = new ArrayList<>();
         clusters = new TileCluster[MAP_WIDTH][MAP_HEIGHT];
         Handler.setScore(0);
         for(int i = 0; i < MAP_WIDTH; i++) {
@@ -63,9 +66,11 @@ public class World {
                 for (Enemy f : enemies) e.collide(f);
         }
         for (Enemy e : enemies) e.tick(dt);
+        for (Powerup p : powerups) p.tick(dt);
         timeTillNextSpawn--;
         bullets.removeIf(projectile -> projectile.getLifeSpan() <= 0);
         enemies.removeIf(enemy -> enemy.getHp() <= 0);
+        powerups.removeIf(powerup -> powerup.getLifeSpan() <= 0);
         spawnEnemy();
         healthBar.tick(dt);
     }
@@ -87,8 +92,16 @@ public class World {
                 }
             }
         }
+        for (int i = 0; i < enemies.size(); i++) {
+            enemies.get(i).collide(player);
+            for (int j = i + 1; j < enemies.size(); j++) {
+                enemies.get(i).collide(enemies.get(j));
+            }
+        }
+
         for (Projectile e : bullets) e.render();
         for (Enemy e : enemies) e.render();
+        for (Powerup p : powerups) p.render();
         player.render();
         healthBar.render();
     }
@@ -124,5 +137,9 @@ public class World {
 
     public static float getMaxDistFormPlayer() {
         return maxDistFormPlayer;
+    }
+
+    public List<Powerup> getPowerups() {
+        return powerups;
     }
 }

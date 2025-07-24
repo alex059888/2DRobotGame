@@ -2,6 +2,7 @@ package engine.entities.emenyes;
 
 import engine.entities.Creature;
 import engine.entities.EntityType;
+import engine.entities.powerups.Powerup;
 import engine.util.Handler;
 import engine.world.World;
 import org.joml.*;
@@ -69,5 +70,7 @@ public class Enemy extends Creature {
 
     public void onDeath() {
         Handler.addScore(score);
+        Random random = new Random();
+        Handler.getWorld().getPowerups().add(Powerup.getPowerup(random.nextInt(0,3),pos));
     }
 }

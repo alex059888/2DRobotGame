@@ -24,6 +24,7 @@ public class Player extends Creature{
         boostPoints = mBP;
         cdc = 0;
         rest = false;
+        template.setDmgMul(4);
     }
 
     @Override
@@ -71,5 +72,15 @@ public class Player extends Creature{
     @Override
     public void render() {
         super.render();
+    }
+
+    public void addHealth(int health) {
+        hp += health;
+        if (hp > maxHP) hp = maxHP;
+    }
+
+    public void addShield(int shield) {
+        this.shield += shield;
+        if (this.shield > maxShield) this.shield = maxShield;
     }
 }

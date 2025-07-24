@@ -6,5 +6,6 @@ public enum EntityType {
     WEAPON,
     LEGS,
     BULLET,
-    UI
+    UI,
+    USABLE
 }

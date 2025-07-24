@@ -41,7 +41,8 @@ public class Texture {
             new BackGroundTex(6),
             new NumbersTex(7),
             new BarsTex(8),
-            new BarsOutTex(9)
+            new BarsOutTex(9),
+            new PowerUpsAndRestoresTex(10)
     );
 
     public Texture(String filepath, Vector2i texSize, int id) {

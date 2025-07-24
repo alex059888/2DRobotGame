@@ -40,12 +40,14 @@ public class Weapon extends Entity {
         super.render();
     }
 
-    public void shot() {
+    public void shot(int dmgMul) {
         if (currentShotDelay <= 0) {
             currentShotDelay = projectile.getDelay();
             Matrix3f m = new Matrix3f().identity().rotateZ(Math.toRadians(rot));
             Vector3f cp = new Vector3f(distFromCenter).mul(m);
-            Handler.getWorld().addProjectile(new Projectile(projectile, new Vector3f(pos).add(cp),rot,shotter));
+            Projectile p = new Projectile(projectile, new Vector3f(pos).add(cp),rot,shotter);
+            p.setDmg(p.getDmg()*dmgMul);
+            Handler.getWorld().addProjectile(p);
         }
     }
 

@@ -58,4 +58,12 @@ public class Projectile extends Entity {
     public float getCollRad() {
         return collRad;
     }
+
+    public int getDmg() {
+        return dmg;
+    }
+
+    public void setDmg(int dmg) {
+        this.dmg = dmg;
+    }
 }
